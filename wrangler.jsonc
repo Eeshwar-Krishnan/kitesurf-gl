@@ -1,0 +1,36 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kitesurf-chromium-webgl-escalation",
+  "main": "src/worker.ts",
+  "compatibility_date": "2025-05-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "containers": [
+    {
+      "class_name": "ChromiumPoolDO",
+      "image": "./container/Dockerfile",
+      // standard-2 provides 2 vCPU and 4 GiB RAM for Chromium + SwiftShader software WebGL rendering.
+      // SwiftShader CPU rasterization and headless Chromium tabs require substantial memory and multi-core
+      // throughput; standard-1 (1/2 vCPU / 4 GiB or lower compute) can bottleneck shader compilation.
+      "instance_type": "standard-2",
+      "max_instances": 10
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "CHROMIUM_POOL",
+        "class_name": "ChromiumPoolDO"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["ChromiumPoolDO"]
+    }
+  ],
+  "vars": {
+    "MAX_POOLS": "4",
+    "KITESURF_CDP_URL": "ws://127.0.0.1:9223"
+  }
+}
