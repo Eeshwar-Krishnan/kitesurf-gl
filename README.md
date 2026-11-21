@@ -1,4 +1,4 @@
-# Hybrid Kitesurf + Warm Chromium WebGL Escalation
+# Kitesurf-gl: Kitesurf + Warm Chromium WebGL Escalation
 
 A Cloudflare Workers + Containers browser execution layer that runs standard pages on **Kitesurf** (fast path) and automatically escalates pages requiring **WebGL / WebGL2** to a warm, multiplexed **Headless Chromium** instance inside a Cloudflare Container (slow path), preserving session state (cookies, `localStorage`, `sessionStorage`, viewport, headers) via CDP serdes.
 
